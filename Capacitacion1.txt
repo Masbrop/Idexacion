@@ -1,0 +1,86 @@
+Job boarad no redireccionan a otra webs y es lo que necesitamos
+Agregador es quienes redireccionan y son competencia
+indeed (Competencia directa) no idexar nada de ellos
+placement - reclutamiento (todo este tipo de paginas donde hacen reclutamiento)
+Company compañias directamente
+con QA Boo Stats se pueden ver especificaciones de los Spiders para identificar posibles problemas
+/"busqueda/"
+FH (flag HTML - 2 ya paso, 1 descripcion en pdf no se muestra a los usuarios, e error en el selector (Descripcion muy corta), 0 jobs en cola)
+
+-------------------------------------------------------------- BOO 3.1 -----------------------------------------------------------------------------------
+
+
+creacion de spiders()
+Menu superior (QA PP Informacion del scanid que se esta tabajando) (Jobs DB) (Tickets donde estan los casos que van llegando)
+
+(Scanid Infor) (Crear Scanid nuevo) (Notificaciones asociadas al sistema de tickets) (Logout)
+
+-Empcode(nombre en las bases de datos) Empname(Es el nombre de la compañia), cuando se digita el Empname el Empcode va a ser el mismo pero en minusculas
+(Todo va separado por -) 
+-Platform(Se coloca el mismo nombre del Empcode) en algunos casos se coloca el ATS(Son empresas que proveen sistemas para colocar trabajos)
+(Si los trabajos estan en el mismo domino de la empresa va a tener en mismo nombre del Empcode, pero si tiene un ATS se coloca el nombre del ATS)
+Cuando se tiene que es un ATS se puede realizar la busqueda y extraer el codigo.
+-Expected jobs(La cantidad de jobs vigentes o que se esperan extraer y se va modificando segun se vayan actualizando los empleos)
+-Page language(Idioma asociado a la pagina)
+-Country(Se coloca donde se encuentren las oficinas principales)
+-Compay Type(Company: cuando el empleo se da directamente por la empresa -- Placement: Empresas de reclutadores que muestran las vacantes de varias compañias,
+Jobs Boarad: Empresas que se encargan de mostrar ofertas y a diferencia de place men estas muestran a que empresa estas aplicando 
+-- agregadores: Muestran ofertas de trabajo, y estas redirigen a la empresa donde tienen la oferta(Son la competencia))
+-Get Job Data(Se refiere a si se va a extraer o no la descripcion del trabajo)
+-Status(New: Cuando se empieza un Spider nuevo (Cuando los jobs se insertan sin problema se pasa a Active) -- Working on it: Se utiliza para realizar mantenimientos 
+y el Spider no se corre automaticamente, Active: El Spider se ejecuta cada cierto tiempo, Inactive: Hay que quitar todos los jobs debido a que se cancela)
+(Eliminacion de jobs, en el boton rojo de abajo para eliminar los jobs)
+-Dev Comment(Es un campo para poder resaltar dificultades de cualquier tipo en el proceso "Deben hacerse en ingles")
+-Spider config(Codigo de configuracion que nos va a permitir mejorar o resulver ciertos inconvenientes a la hora de hacer la prueba cuando ejecutamos el spider)
+
+Scannid nuevo 
+Nombre de la compañia 
+pagina principal 
+url del sitio donde esta el empleo, sea ATS o Company
+
+Hay que validar si la compañia no se encuentra indexada
+
+http://boo1.neuvoo.com/service/is-indexed.php?debug=1&u=
+status -1 esta activo 
+status 7 Working on it
+
+---- 197127 Scanid de prueba ---- 161201
+La herramienta se va haciendo por pasos Step: se utilizan dependiendo de lo que se va a resolver, Extract, Pagination, Spider Test, Job Descripcion 
+estos son los 4 casos principales con los que se van a trabajar.
+
+Ay que aprovar cada uno de los 4 Steps
+
+Infiniti pagination: Es el primer step que se ejecuta para poder ejecutar lo demas, se utiliza para resulver casos lo more(el boton para hacer click
+y desplegar trabajos, para trabajar ese caso es necesario trabajar con el infiniti pagination) o tambien los scroll(Donde hay que ir bajando en la
+pagina para que aparezcan los jobs) Solo se ejecuta una sola vez (Desde ahi se ejecuta el codigo para lograr resolver el caso)
+
+Expected job: Se utiliza para identificar la cantidad de jobs(No es necesario pero se podria utilizar para hacer validaciones con respecto a esa cantidad de jobs)
+
+Before Extract: Se ejecuta antes de la extracion(Nos ayuda a ejecutar una accion previa antes de llegar al extract, o a agregar tiempo de espera para
+poder agregar los jobs al extract, por ejemplos a veces no da tiempo de que la pagina se muestre por completo etonces esto nos ayuda con eso)
+
+Extract: Es uno de los mas importantes ya que es donde se ejecuta la extracion de los jobs y tambien se hace el insert de esa informacion en la base de datos,
+Lo primero es selecionar el step, luego de esto, se seleciona template category : Extract y luego la Template: simple-extract, luego de eso volvemos a elegir en step extract
+luego le doy control z para que aparezca nuevamente la plantilla
+
+Before pagination: Se ejecuta antes del pagination para hacer tiempo de espera o algun paso antes de la paginacion(Si no es necesario no se coloca)
+
+Pagination: Al igual que el Extract tiene varias listas desplegables - Template: pagination templane(la plantilla se define segun la paginacion)
+---Cuando se usa el infiniti pagination(La plantilla se usa es no-pagination)--- 
+
+Spider test: Es donde se realiza la prueba del codigo total del Spider(Se seleciona en template category la paginacion, el extract etc) no se puede probar hasta que no se aprueven 
+
+Before job descripcion: paso anterior al jobdescripcion, sin embargo no es necesario
+
+Job Description: Template category: jobdata - Templane: simple jobdata - Random: permite realizar pruebas al azar de los jobs obtenidos, 
+Elastic Query: Realiza querys en BD elastic para probar jobs especificos (Se utiliza para buscar algun job en particular o un lote de job)
+Se debe tener en cuenta el REQ ID, para extraer algo especifico podemos usar (job.reqid = full_html.innerHTML.split("REQ ID:")[1].split('<br>')[0].trim();)
+Como limpiar algo en el codigo(job.html = job.html.replace('El texto a eliminar', 'lo que quiero');)
+
+
+https://jobs-emplois.yp.ca/jobs/search/
+
+Ciudad, Provincia, Pais
+
+
+

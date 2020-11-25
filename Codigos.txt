@@ -1,0 +1,4 @@
+Quitar emojis - job.html = job.html.replace(/[\uD83C-\uDBFF\uDC00-\uDFFF]+/g, "");
+Saca informacion desde, hasta - job.reqid = full_html.innerHTML.split("REQ ID:")[1].split('<br>')[0].trim();
+Limpiar un texto especificado - job.html = job.html.replace('El texto a eliminar', 'lo que quiero');
+Organizar location ciudad, provincia, pais - job.html = job.html.split(',').reverse().join(', ').trim();
