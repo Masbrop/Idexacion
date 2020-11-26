@@ -84,3 +84,4 @@ Ciudad, Provincia, Pais
 
 
 
+table.jobs.table > div.absolute > span > a 

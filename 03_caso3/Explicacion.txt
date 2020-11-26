@@ -1,0 +1,2 @@
+Extracion de url usando un boton, paginacion, jobdescription con una buena limpieza y comandos especiales
+beforeextrac con tiempos de esperar de de carga de clases 

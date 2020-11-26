@@ -1,0 +1,7 @@
+(function() {
+    var out = {};
+    out["html"] = true;
+    out["pic"] = true;
+    out.waitFor = "div#resultListPanel.jobListPanel";
+    return out;
+})();

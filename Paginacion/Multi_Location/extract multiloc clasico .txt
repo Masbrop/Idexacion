@@ -1,0 +1,42 @@
+(function() {
+	var out = {};
+     var html_jobs = document.querySelectorAll("div#jobListingList > ul > li.search-result");
+  	var jobs = [];for(var x in html_jobs){
+    	if(typeof html_jobs[x] =="function") continue;
+      	if(typeof html_jobs[x] =="number") continue;
+    	var job = {};
+    	var elem = html_jobs[x];
+    	job.title = elem.querySelector("div.posting-title").textContent.trim();
+    	job.url = elem.querySelector("a").href.trim();
+    	job.location = elem.querySelector("div.location").textContent.trim().split("-").shift().replace("USA",'US');
+        job.dateposted_raw = elem.querySelector("div.posting-date").textContent.trim().split(":").pop().replace("Monday,",'').replace("Tuesday,",'').replace("Wednesday,",'').replace("Thursday,",'').replace("Friday,",'').replace("Saturday,",'').replace("Sunday,",'');
+        job.dateposted_raw = job.dateposted_raw.trim();
+		job.dateposted_raw = job.dateposted_raw.replace("January",'01').replace("February",'02').replace("March",'03').replace("April",'04').replace("May",'05').replace("June",'06').replace("July",'07').replace("August",'08').replace("September",'09').replace("October",'10').replace("November",'11').replace("December",'12').replace(", ",'/').replace(/ /gi,"/")
+		
+      if(job.location.indexOf(";")>-1){
+        job.location = job.location.split(";");
+         for(var i = 0; i<job.location.length; i++) {
+            var jobx = {};
+            jobx.title=job.title;
+            jobx.location = job.location[i];
+            jobx.url=job.url;
+			jobx.dateposted_raw = job.dateposted_raw; 
+			jobs.push(jobx);
+        }
+         
+         
+         }else {job.location = job.location;
+         jobs.push(job);
+         }
+		//job.logo = elem.querySelector("").getAttribute("src").trim();
+		//job.source_apply_email = elem.querySelector("").textContent.trim();
+		//job.source_empname = elem.querySelector("").textContent.trim();
+		//job.source_jobtype = elem.querySelector("").textContent.trim();
+		//job.source_salary = elem.querySelector("").textContent.trim();
+       	job.temp = 25;
+    	//jobs.push(job);
+  	} 
+  
+	out["jobs"]= jobs;
+  	return out;
+})();

@@ -1,0 +1,35 @@
+(function() {
+	var out = {};
+  	var jobs = [];
+	var jobsSelector = '';  //SELECTOR DE LOS JOBS
+  
+  $(jobsSelector).each(function( index ) {
+    
+   var loc = $(this).find("").text().trim().split("");
+   loc.forEach( function (element){
+   		var job = {};
+        //job.title = $(this).find("").text().replace(/\[.*?\]/g, '').trim();
+        job.location = element.trim();
+        // job.url = $(this).find("").attr("href");
+        // job.logo = $(this).find("").attr("src");
+        // job.source_apply_email = $(this).find("").text().trim();
+        // job.source_empname = $(this).find("").text().trim();
+        // job.source_jobtype = $(this).find("").text().trim();
+        // job.source_salary = $(this).find("").text().trim();
+        /*var fecha = $(this).find('time').attr("datetime").split("T")[0].split("-");
+         job.dateposted_raw = fecha[1]+'/'+fecha[2]+'/'+fecha[0];*/
+         /*var fecha = $(this).find("").text().trim().split("/");
+         job.dateposted_raw = fecha[1]+'/'+fecha[0]+'/'+fecha[2];*/
+        // job.dateposted_raw = $(this).find("").text().trim();
+        // job.dateclosed_raw = $(this).find("").text().trim();
+        // job.html = $(this).find("").html();
+        // job.html = cleanHTML(job.html);
+        // job.jobdesc 	= job.html;
+        job.temp = 1;
+    	jobs.push(job);
+    }, this);
+});
+  
+	out["jobs"]= jobs;
+  	return out;
+})();
