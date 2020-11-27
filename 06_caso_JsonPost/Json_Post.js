@@ -1,6 +1,7 @@
- //------------------------------------------------------------|
- // Extract                                                    |
- //------------------------------------------------------------|
+//------------------------------------------------------------|
+// Extract                                                    |
+//------------------------------------------------------------|
+
  (function() {
     var jobs = [];
     var out = {};
@@ -51,3 +52,86 @@
     out["jobs"]= jobs;
     return out;
   })();
+
+//------------------------------------------------------------|
+// Jobdescription                                             |
+//------------------------------------------------------------|
+
+(function() {
+    var out = {};
+    var job = {};
+    var jobid = pass_it["job"].url.split("&r=").pop().split('#').shift();
+    var endpoint = "https://recruiting.adp.com/srccar/public/rest/1/115407/job/" + jobid + "?rl=en"; //Se contruye la URL manualmente
+    
+    msg(endpoint);
+    $.ajax({
+      url: endpoint,
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8"
+      },
+      type: 'GET',
+      async: false,
+      success: function (result) {
+        var full_html = "";
+  
+        for (var i = 0; i < result.fields.length; i++) {
+          // Ignorar las dos primeras posiciones porque son como basura...
+          if (i >= 3) {
+            full_html += "<br/>";
+            full_html += "<h3>" + result.fields[i].label + "</h3><br/>" + result.fields[i].content;
+          }
+        }
+        
+        for (var i = 0; i < result.fields.length; i++) 
+        {
+          // Ignorar las dos primeras posiciones porque son como basura...
+          if (result.fields[i].label == "Company") 
+          {                       
+            job.source_empname = result.fields[i].content;
+          }
+        }
+        job.html      = full_html;
+        job.html = removeTextBefore(job.html, "General Summary", false);
+        job.html = removeTextBefore(job.html, "PURPOSE:", false);
+        job.html = removeTextAfter(job.html, "How to Apply", true);
+        job.html = removeTextAfter(job.html, "Diversity is fundamental at Safeway", true);
+        job.html = removeTextAfter(job.html, "Locally great and nationally strong, Albertsons Companies (NYSE: ACI)", true);
+        job.html = removeTextAfter(job.html, "Secondary Locations", true);
+        
+        job.html      = cleanHTML(job.html);
+        
+        var tmp       = document.createElement('div');      
+        tmp.innerHTML = job.html;
+        job.jobdesc   = tmp.textContent.trim();
+        job.jobdesc   = cleanHTML(job.jobdesc); 
+        if(job.jobdesc.length < 100){
+          job.dateclosed_raw='01/01/2012';
+        }     
+      },
+      error: function (error) {
+        msg(error);
+      }
+    });
+    out["job"] = job;
+    return out;
+  })();
+  function removeTextBefore(html, text, flag) {
+    var newHtml = html;
+    if (newHtml.indexOf(text) > -1) {
+      newHtml = newHtml.split(text).pop();
+      if (!flag) {
+        newHtml = "<h3>" + text + "</h3>" + newHtml;
+      }       
+    }
+    return newHtml;
+  }
+  function removeTextAfter(html, text, flag) {
+    var newHtml = html;
+    if (newHtml.indexOf(text) > -1) {
+      newHtml = newHtml.split(text).shift();
+      if (!flag) {
+        newHtml = newHtml + "<p>" + text + "</p>";
+      }       
+    }
+    return newHtml;
+  }
