@@ -81,7 +81,15 @@ Como limpiar algo en el codigo(job.html = job.html.replace('El texto a eliminar'
 https://jobs-emplois.yp.ca/jobs/search/
 
 Ciudad, Provincia, Pais
-
+Mes/Dia/Año
 
 
 table.jobs.table > div.absolute > span > a 
+
+
+CASO INLAND 
+Se extrae la descripcion directamente desde el extract 
+solo utiliza 3 pasos
+Before extract 
+extrac 
+pagination

@@ -1,7 +1,40 @@
+196222
 Quitar emojis - job.html = job.html.replace(/[\uD83C-\uDBFF\uDC00-\uDFFF]+/g, "");
 Saca informacion desde, hasta - job.reqid = full_html.innerHTML.split("REQ ID:")[1].split('<br>')[0].trim();
 Limpiar un texto especificado - job.html = job.html.replace('El texto a eliminar', 'lo que quiero');
 Organizar location ciudad, provincia, pais - .split(',').reverse().join(', ').trim();
+Elimina los etiquetas dentro de job description - let links = document.querySelectorAll('a,script,input,button,style');
+links.forEach(elemento => elemento.remove());
+Sirve para limpiar - function contains(elementos, texto) { var resultado = [].slice.call(elementos).filter(element => RegExp(texto).test(element.textContent)); return resultado[0]; // quitar el [0] si quieres todos los resultados }
+job.dateposted_raw = contains(elem.querySelectorAll("span"),"Online since:").textContent.trim();
+Tomar una URL directa del jobsite - job.url = window.location.href;
+Limpia emojis y caracteres especiales - job.html = full_html.replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').trim();
+Elimina en el QAPP los jobs que no tengan descripcion valida 
+job.html = full_html.innerHTML.trim();
+ 
+if (job.html.length < 200) {​​​​
+    job.flag_active = 0;
+    job.html = "";
+}​​​​
+job.jobdesc = full_html.textContent.trim();
+ 
+if (job.jobdesc.length < 200) {​​​​
+    job.flag_active = 0;
+    job.html = "";
+}​​​​
+
+Epera por segundos - (function() {​​​​
+    var out = {​​​​}​​​​;
+    msg("Esperando 3 segundos..............")
+    out.wait = 3000;
+    return out;
+}​​​​)();
+Epera que un selector tenga un cambio o que aparezca - (function() {​​​​
+    var out = {​​​​}​​​​;
+    out.waitFor = "Selector ";
+    return out;
+}​​​​)();
+
 
 Spider config (Son todos los serviicos necesarios que conectan el sistema con la pagina) en el scannid info
 {​​​​
@@ -17,6 +50,7 @@ Spider config (Son todos los serviicos necesarios que conectan el sistema con la
 }​​​​
 
 PAGINATION
+
 ------paso de pagina si hay un boton------
 (function() {
     var out = {};
@@ -41,10 +75,6 @@ PAGINATION
     return out;
 })();
 
-
-
-
-
 //////////// Wait For selector  +  out pic
 (function() {
     var out = {};
@@ -52,8 +82,6 @@ PAGINATION
       out.waitFor = "";
     return out;
 })();
-
- 
 
 //////////// wait forzado  +  out pic
 (function() {
@@ -64,11 +92,7 @@ PAGINATION
       return out;
 })();
 
- 
-
 //////////// Wait For Iframe  +  out pic
-
- 
 
 (function() {
     var out = {};
@@ -77,12 +101,7 @@ PAGINATION
     return out;
 })();
 
- 
-
 ////////////
-
-
-
 
 BEFOREEXTRACT
 ------Tiempo de espera------
@@ -93,9 +112,6 @@ BEFOREEXTRACT
     out.waitFor = "";
     return out;
 })();
-
-
-
 
 
 MULTI LOCATION -- TEMPLADE -- 

@@ -20,8 +20,11 @@
 		//job.source_empname = elem.querySelector("").textContent.trim();
 		//job.source_jobtype = elem.querySelector("").textContent.trim();
 		//job.source_salary = elem.querySelector("").textContent.trim();
-       	job.temp = 1;
-    	jobs.push(job);
+		   job.temp = 1;
+		   
+      	if(titles != "Spontaneous"){
+          jobs.push(job);
+        }
   	} 
   
 	out["jobs"]= jobs;
