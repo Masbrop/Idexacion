@@ -20,12 +20,12 @@
         dataType: "json",
         async : false,
         success : function(result){
-          json = result.jobs;
-          limit = result.pages; //Se debe verificar hasta donde llega la paginacion para no sacar jobs repetidos
+          json = result.jobs; //.jobs es el nombre del json donde se encuentra la informacion 
+          limit = result.pages; //.pages es el nombre del contador de la pagina .Se debe verificar hasta donde llega la paginacion para no sacar jobs repetidos
           for(var i = 0; i<json.length; i++) {
             var job = {};
             var elem = json[i];
-            job.id=elem.id;
+            job.id = elem.id;
             job.title = elem.ptitle;
             job.location = elem.locationCity + " " + elem.locationState ;
             job.url = elem.url;                    
